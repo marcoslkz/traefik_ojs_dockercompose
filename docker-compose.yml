@@ -9,16 +9,17 @@ services:
     image: pkpofficial/ojs:${OJS_VERSION}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.${SITE_PATH}.rule=Host(`${DOMAIN_NAME}`)
-      - traefik.http.routers.${SITE_PATH}.tls=true
-      - traefik.http.services.${SITE_PATH}.loadbalancer.server.port=80
-      - traefik.http.routers.${SITE_PATH}.tls.certresolver=letsencrypt
+      - traefik.http.routers.ojs_${SITE_PATH}.rule=Host(`${DOMAIN_NAME}`)
+      - traefik.http.routers.ojs_${SITE_PATH}.tls=true
+      - traefik.http.services.ojs_${SITE_PATH}.loadbalancer.server.port=80
+      - traefik.http.routers.ojs_${SITE_PATH}.tls.certresolver=letsencrypt
       - traefik.frontend.entryPoints=http,https
     extra_hosts:
       - "${SERVER_URL}:${SERVERIPADDR}" # for new install only
     environment:
+      - TZ
+      - SERVER_URL=${DOMAIN_NAME}  
       - OJS_CLI_INSTALL=1  # autoupdate
-      - DOMAIN_NAME  
       - OJS_DB_DRIVER=mysqli
       - OJS_DB_HOST
       - OJS_DB_USER
